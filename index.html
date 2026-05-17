@@ -234,7 +234,7 @@ function exportCSV(){
   const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
   const blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');a.href=url;a.download='TS22002-1_評価結果_'+(new Date()).toISOString().slice(0,16).replace('T','_').replace(/:/g,'')+'.csv';a.click();
+  const a=document.createElement('a');a.href=url;a.download='TS22002-1_評価結果_'+(new Date(Date.now()+9*3600*1000)).toISOString().slice(0,16).replace('T','_').replace(/:/g,'')+'.csv';a.click();
   URL.revokeObjectURL(url);
 }
 
