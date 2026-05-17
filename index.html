@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1a56a0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="TS22002チェック">
+<link rel="manifest" href="manifest.json">
+<title>ISO/TS22002-1 自己評価チェックシート</title>
+<style>
+:root{--blue:#1a56a0;--blue-light:#e8f0fb;--green:#1a7a3a;--green-bg:#e6f4ea;--red:#b91c1c;--red-bg:#fee2e2;--orange:#c05621;--orange-bg:#fff3e0;--gray:#6b7280;--border:#e5e7eb;--r:10px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic UI",sans-serif;background:#f3f4f6;color:#111827;min-height:100vh}
+header{background:var(--blue);color:#fff;padding:12px 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+header h1{font-size:15px;font-weight:700;line-height:1.3}
+.sub{font-size:11px;opacity:.8;margin-top:2px}
+.pb-wrap{margin-top:8px;background:rgba(255,255,255,.25);border-radius:4px;height:6px}
+.pb{height:6px;background:#4ade80;border-radius:4px;transition:width .3s;width:0}
+.pt{font-size:11px;opacity:.9;margin-top:4px}
+.tabs{display:flex;overflow-x:auto;background:#fff;border-bottom:1px solid var(--border);position:sticky;top:76px;z-index:90;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:10px 14px;font-size:12px;font-weight:600;color:var(--gray);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;transition:color .15s}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.badge{display:inline-block;background:var(--border);color:var(--gray);border-radius:999px;font-size:10px;padding:0 5px;margin-left:4px;min-width:18px;text-align:center}
+.tab.active .badge{background:var(--blue-light);color:var(--blue)}
+main{padding:12px;max-width:680px;margin:0 auto}
+.panel{display:none}
+.panel.active{display:block}
+.mg{margin-bottom:12px}
+.mh{font-size:12px;font-weight:700;color:var(--blue);background:var(--blue-light);padding:6px 10px;border-radius:var(--r) var(--r) 0 0;border:1px solid #c3d9f7;border-bottom:none}
+.card{background:#fff;border:1px solid var(--border);border-top:none;padding:12px;transition:background .15s}
+.card:last-child{border-radius:0 0 var(--r) var(--r)}
+.card.ok{background:var(--green-bg);border-color:#a7d7b5}
+.card.ng{background:var(--red-bg);border-color:#fca5a5}
+.card.ex{background:var(--orange-bg);border-color:#fed7aa}
+.itop{display:flex;gap:8px;align-items:flex-start}
+.sno{flex:0 0 auto;font-size:10px;font-weight:700;color:#fff;background:var(--blue);border-radius:4px;padding:2px 6px;margin-top:2px}
+.itext{font-size:13px;line-height:1.6;flex:1}
+.note{font-size:11px;color:var(--gray);margin-top:6px;padding-left:4px;border-left:2px solid var(--border)}
+.rg{display:flex;gap:6px;margin-top:10px}
+.rb{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;padding:7px 4px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;background:#fff;color:var(--gray);user-select:none}
+.rb.ok{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.rb.ng{background:var(--red-bg);border-color:var(--red);color:var(--red)}
+.rb.ex{background:var(--orange-bg);border-color:var(--orange);color:var(--orange)}
+.cmt{width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:12px;font-family:inherit;resize:vertical;min-height:60px;background:#fafafa;margin-top:8px;transition:border .15s}
+.cmt:focus{outline:none;border-color:var(--blue);background:#fff}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.sc{background:#fff;border-radius:var(--r);padding:14px 10px;text-align:center;border:1px solid var(--border)}
+.sc .n{font-size:28px;font-weight:800}
+.sc .l{font-size:11px;color:var(--gray);margin-top:4px}
+.sc.ok .n{color:var(--green)}
+.sc.ng .n{color:var(--red)}
+.sc.ex .n{color:var(--orange)}
+.issue{background:#fff;border:1px solid #fca5a5;border-left:4px solid var(--red);border-radius:var(--r);padding:10px 12px;margin-bottom:8px;font-size:12px}
+.ino{font-weight:700;color:var(--red);font-size:11px;margin-bottom:4px}
+.itxt{line-height:1.5}
+.icmt{margin-top:6px;color:var(--gray);font-style:italic}
+.ebtn{display:block;width:100%;padding:14px;background:var(--blue);color:#fff;border:none;border-radius:var(--r);font-size:14px;font-weight:700;cursor:pointer;margin-top:16px;font-family:inherit}
+.rbtn{display:block;width:100%;padding:12px;background:#fff;color:var(--red);border:1.5px solid var(--red);border-radius:var(--r);font-size:13px;font-weight:600;cursor:pointer;margin-top:10px;font-family:inherit}
+.empty{text-align:center;color:var(--gray);padding:40px 20px;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+  <h1>ISO/TS22002-1 自己評価チェックシート</h1>
+  <div class="sub">食品安全一般衛生管理項目 SHALL要求 207項目</div>
+  <div class="pb-wrap"><div class="pb" id="pb"></div></div>
+  <div class="pt" id="pt">0 / 207 回答済み</div>
+</header>
+<div class="tabs" id="tabs"></div>
+<main id="main"></main>
+<script>
+const DATA = [{"major": "4", "major_title": "敷地の構造と配置", "minor": "4.1", "minor_title": "一般要求事項", "shall_no": 1, "text": "建物は、実際の加工作業の特性、それらの作業と結び付いた食品安全ハザード及び工場（プラント）の環境からの潜在的な汚染源に相応しく、設計され、建設され、保守されなければならない。", "notes": []}, {"major": "4", "major_title": "敷地の構造と配置", "minor": "4.1", "minor_title": "一般要求事項", "shall_no": 2, "text": "建物は、製品にハザードを与えない耐久性のある構造でなければならない。", "notes": ["注記 「耐久性のある構造」の例は、漏れのない、自動的な排水である。"]}, {"major": "4", "major_title": "敷地の構造と配置", "minor": "4.2", "minor_title": "環境", "shall_no": 3, "text": "局所的な環境による潜在的な汚染源は考慮されなければならない。", "notes": []}, {"major": "4", "major_title": "敷地の構造と配置", "minor": "4.2", "minor_title": "環境", "shall_no": 4, "text": "食品製造は、潜在的に危険物質が食品に入らない区域で行われなければならない。", "notes": []}, {"major": "4", "major_title": "敷地の構造と配置", "minor": "4.2", "minor_title": "環境", "shall_no": 5, "text": "潜在的汚染物質から保護するためにとられる手段の有効性を、定期的に見直さなければならない。", "notes": []}, {"major": "4", "major_title": "敷地の構造と配置", "minor": "4.3", "minor_title": "施設所在地", "shall_no": 6, "text": "施設の境界は明らかに特定できなければならない。", "notes": []}, {"major": "4", "major_title": "敷地の構造と配置", "minor": "4.3", "minor_title": "施設所在地", "shall_no": 7, "text": "敷地へのアクセスは管理されなければならない。", "notes": []}, {"major": "4", "major_title": "敷地の構造と配置", "minor": "4.3", "minor_title": "施設所在地", "shall_no": 8, "text": "敷地はよい状態に維持されなければならない。", "notes": []}, {"major": "4", "major_title": "敷地の構造と配置", "minor": "4.3", "minor_title": "施設所在地", "shall_no": 9, "text": "建屋は手入れをするか、撤去されなければならない。", "notes": []}, {"major": "4", "major_title": "敷地の構造と配置", "minor": "4.3", "minor_title": "施設所在地", "shall_no": 10, "text": "道、構内及び駐車場は、水溜りを防ぐために水抜きされ、保守されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.1", "minor_title": "一般的要求事項", "shall_no": 11, "text": "内容の配置は、良好な衛生状態及び製造規範を促進するために設計され、建設され、そして維持されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.1", "minor_title": "一般的要求事項", "shall_no": 12, "text": "材料、製品、人の動線、及び装置の配置は、潜在的汚染源から保護するように設計されていなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.2", "minor_title": "内部の設計、配置及び動線", "shall_no": 13, "text": "建物は、材料、製品及び要員の合理的な流れ、並びに加工区域から原料の物理的な隔壁を保ち、十分な空間を提供しなければならない。", "notes": ["注記 物理的な隔壁の例には、壁、柵、若しくは仕切り壁、又はリスクを最小にするための十分な距離を含む。"]}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.2", "minor_title": "内部の設計、配置及び動線", "shall_no": 14, "text": "材料の滞在のための開放は、動物と有害生物の侵入を最小限にするように設計されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.3", "minor_title": "内部構造及び備品", "shall_no": 15, "text": "加工区域の壁及び床は、加工、若しくは製品ハザードに適するように洗浄可能であるか、又は清掃・洗浄が可能でなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.3", "minor_title": "内部構造及び備品", "shall_no": 16, "text": "構造物の材料は、使用する清掃・洗浄システムに耐えるものでなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.3", "minor_title": "内部構造及び備品", "shall_no": 17, "text": "壁と床の接合部及び隅（角）は、清掃・洗浄が容易にできるように設計されていなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.3", "minor_title": "内部構造及び備品", "shall_no": 18, "text": "床は、水溜りを避けるように設計されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.3", "minor_title": "内部構造及び備品", "shall_no": 19, "text": "ウェットな加工区域では、床は漏れ止めされ、及び排水でできなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.3", "minor_title": "内部構造及び備品", "shall_no": 20, "text": "排水はトラップされ及び覆われなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.3", "minor_title": "内部構造及び備品", "shall_no": 21, "text": "天井と頭上の設備は、埃及び結露の蓄積を最小にするように設計されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.3", "minor_title": "内部構造及び備品", "shall_no": 22, "text": "外部に開く窓、屋根の換気孔、又は換気扇がある場合は、捕虫網がなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.3", "minor_title": "内部構造及び備品", "shall_no": 23, "text": "外部に開く扉は、使用しないときには閉めるか、又は仕切られていなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.4", "minor_title": "装置の配置", "shall_no": 24, "text": "装置は、適正な衛生規範及びモニタリングが容易にできるように設計され、配置されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.4", "minor_title": "装置の配置", "shall_no": 25, "text": "装置は、作業、清掃・洗浄及び保守しやすいように配置されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.5", "minor_title": "試験室", "shall_no": 26, "text": "インライン及びオンラインの試験設備は、製品汚染のリスクを最小にするために管理されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.5", "minor_title": "試験室", "shall_no": 27, "text": "細菌試験室は、人、設備及び製品からの汚染を防止するように設計され、配置され、運営されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.5", "minor_title": "試験室", "shall_no": 28, "text": "細菌試験室は直接、製造区域に隣接していてはならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.6", "minor_title": "一時的／移動可能な設備及びベンディングマシン", "shall_no": 29, "text": "一時的な構造物は、有害生物の棲みか及び製品の潜在的汚染を避けるように、設計され、配置され、建設されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.6", "minor_title": "一時的／移動可能な設備及びベンディングマシン", "shall_no": 30, "text": "一時的な構造物及びベンディングマシンに関連する追加的なハザードは、評価されて管理されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.7", "minor_title": "食品、包装資材、材料及び非食用化学物質の保管", "shall_no": 31, "text": "材料、包装資材及び製品を保管する設備は、埃、結露、排水、廃棄物及び他の汚染源からの保護を提供しなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.7", "minor_title": "食品、包装資材、材料及び非食用化学物質の保管", "shall_no": 32, "text": "保管区域は、乾燥し、換気がよくなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.7", "minor_title": "食品、包装資材、材料及び非食用化学物質の保管", "shall_no": 33, "text": "特定される場所では、温度及び湿度のモニタリング及び管理が行われなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.7", "minor_title": "食品、包装資材、材料及び非食用化学物質の保管", "shall_no": 34, "text": "保管区域は、原料、中間製品及び最終製品を隔離できるように、設計、又は設置されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.7", "minor_title": "食品、包装資材、材料及び非食用化学物質の保管", "shall_no": 35, "text": "すべての材料と製品は、床から離して、さらに検査及び有害生物（そ（鼠）族、昆虫等）の防除活動を実施するのに十分な材料及び壁の隙間を確保して、保管されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.7", "minor_title": "食品、包装資材、材料及び非食用化学物質の保管", "shall_no": 36, "text": "保管区域は、汚染を防ぎ及び劣化を最低限にする保守と清掃・洗浄ができるように設計されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.7", "minor_title": "食品、包装資材、材料及び非食用化学物質の保管", "shall_no": 37, "text": "清掃・洗浄剤、化学薬剤及び他の危険物質に対して、別の安全な（鍵が掛かるか、さもなければアクセスが管理されている）保管区域が提供されなければならない。", "notes": []}, {"major": "5", "major_title": "施設及び作業区域の配置", "minor": "5.7", "minor_title": "食品、包装資材、材料及び非食用化学物質の保管", "shall_no": 38, "text": "バルク、又は農作物のための例外は、FSMSの中で文書化されなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.1", "minor_title": "一般要求事項", "shall_no": 39, "text": "加工及び保管区域周辺へのユーティリティの講義及び供給ルートは、製品汚染のリスクを最小限にするように設計されなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.1", "minor_title": "一般要求事項", "shall_no": 40, "text": "ユーティリティの質は、製品汚染のリスクを最小にするために監視されなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.2", "minor_title": "水の供給", "shall_no": 41, "text": "飲料に適する水は、製造工程の需要を満たすのに十分でなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.2", "minor_title": "水の供給", "shall_no": 42, "text": "水の誘導、供給、及び必要であれば温度調節のための設備は、特定された水質条件を満たすように設計されなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.2", "minor_title": "水の供給", "shall_no": 43, "text": "氷、又は蒸気（厨房の蒸気を含む）を含む、製品の材料として使用される水、又は製品、又は製品面と接触して使われる水は、製品に関連して特定の品質及び微生物学的な要求事項を満たさなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.2", "minor_title": "水の供給", "shall_no": 44, "text": "清掃・洗浄用水、又は間接的な製品接触（例えば、ジャケット付き容器、熱交換器）のリスクがある場合に適用する水は、特定の品質及び適用に関連する微生物学的な要求事項を満たさなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.2", "minor_title": "水の供給", "shall_no": 45, "text": "給水が塩素で処理される場合は、使用の時点で残留塩素レベルが関連する仕様書の基準内であることを確実にするために、点検しなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.2", "minor_title": "水の供給", "shall_no": 46, "text": "飲料不適の水は表示され、飲料用の水供給システムに結合されない独立の供給システムをもたなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.2", "minor_title": "水の供給", "shall_no": 47, "text": "飲料不適の水が飲料用水の供給システムに逆流しないよう措置しなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.3", "minor_title": "ボイラー用化学薬剤", "shall_no": 48, "text": "使用する場合は、ボイラー用化学薬剤は以下のいずれかでなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.3", "minor_title": "ボイラー用化学薬剤", "shall_no": 49, "text": "ボイラー用化学薬剤は、直ちに使用するとき以外、別の安全な（鍵が掛かるか、アクセスが管理された）区域に保管されなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.4", "minor_title": "空気の質および換気", "shall_no": 50, "text": "組織は、材料、又は製品に直接接触して使用される空気の、濾過、温度（RH%）及び微生物学的要求事項を確立しなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.4", "minor_title": "空気の質および換気", "shall_no": 51, "text": "湿度及び/又は温度が、組織によって重要であると考えられる場合は、管理システムが実施され、さらに監視されなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.4", "minor_title": "空気の質および換気", "shall_no": 52, "text": "換気（自然な、又は機械的な）は、過剰な、又は不要な蒸気、埃及びにおいを取り除き、並びに湿式加工後の乾燥を促すように提供されなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.4", "minor_title": "空気の質および換気", "shall_no": 53, "text": "室内空気供給の質は、空中微生物からの汚染のリスクを最小にするために、管理されなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.4", "minor_title": "空気の質および換気", "shall_no": 54, "text": "空気のモニタリング及び管理のための手順が、微生物の発育、又は汚染しやすい製品が曝露される区域において確立されなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.4", "minor_title": "空気の質および換気", "shall_no": 55, "text": "換気システムは、空気が汚染されたり、又は原材料区域から清浄区域に流れたりしないように、設計され、構築されなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.4", "minor_title": "空気の質および換気", "shall_no": 56, "text": "特定の空気圧は維持されなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.4", "minor_title": "空気の質および換気", "shall_no": 57, "text": "清掃・洗浄、フィルター交換及びアクセスしやすいシステムでなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.4", "minor_title": "空気の質および換気", "shall_no": 58, "text": "外気の取り込み口は、物理的な完全性を定期的に調べなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.5", "minor_title": "圧縮空気及び他のガス類", "shall_no": 59, "text": "製造に用いる、又は充てんされる、圧縮空気、二酸化炭素、窒素及び他のガス類のシステムは、汚染を防止するように造られ、及び保管がなされなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.5", "minor_title": "圧縮空気及び他のガス類", "shall_no": 60, "text": "直接、又は偶発的に製品に接触するガス類（蒸気、送風、又は材料、製品、又は装置の乾燥に用いるガスを含む）は、食品に接触する使用が許可され、埃、油及び水が取り除かれている供給源でなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.5", "minor_title": "圧縮空気及び他のガス類", "shall_no": 61, "text": "コンプレッサーに油が使用され、そのコンプレッサーからの空気が直接製品に接触する潜在的な可能性のある場合は、使用する油は食品用グレードでなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.6", "minor_title": "空調", "shall_no": 62, "text": "空調、湿度（RH%）及び微生物学的要件は特定されなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.7", "minor_title": "照明", "shall_no": 63, "text": "照明（自然光又は人工照明）は、要員が衛生的に作業することを提供しなければならない。", "notes": []}, {"major": "6", "major_title": "ユーティリティ — 空気、水、エネルギー", "minor": "6.7", "minor_title": "照明", "shall_no": 64, "text": "照明設備は破損の際に、材料、製品、又は装置を汚染しないことを確実にするため、保護されていなければならない。", "notes": []}, {"major": "7", "major_title": "廃棄物処理", "minor": "7.1", "minor_title": "一般要求事項", "shall_no": 65, "text": "システムは、廃棄物が、製品、又は製造区域の汚染を予防する方法で、識別され、集められ、除去され、そして処分されることを確実に実施できるようにしておかなければならない。", "notes": []}, {"major": "7", "major_title": "廃棄物処理", "minor": "7.2", "minor_title": "廃棄物及び食用に適さない、又は危険な物質の容器", "shall_no": 66, "text": "廃棄物及び食用に適さない、又は危険な物質の容器は次のようでなければならない。", "notes": []}, {"major": "7", "major_title": "廃棄物処理", "minor": "7.3", "minor_title": "廃棄物管理及び撤去", "shall_no": 67, "text": "廃棄物の隔離、保管及び撤去について、対策を講じなければならない。", "notes": []}, {"major": "7", "major_title": "廃棄物処理", "minor": "7.3", "minor_title": "廃棄物管理及び撤去", "shall_no": 68, "text": "廃棄物の集積が、食品を取り扱う区域、又は保管区域で容認されてはならない。", "notes": []}, {"major": "7", "major_title": "廃棄物処理", "minor": "7.3", "minor_title": "廃棄物管理及び撤去", "shall_no": 69, "text": "撤去頻度は、堆積を防ぐため、最小限毎日管理されなければならない。", "notes": []}, {"major": "7", "major_title": "廃棄物処理", "minor": "7.3", "minor_title": "廃棄物管理及び撤去", "shall_no": 70, "text": "廃棄することを示した原材料、製品又は印刷済み包装は、変形させるか、又は特異な再利用ができないことを確実にするために破壊されなければならない。", "notes": []}, {"major": "7", "major_title": "廃棄物処理", "minor": "7.3", "minor_title": "廃棄物管理及び撤去", "shall_no": 71, "text": "抜取と破壊は、承認された契約者によって行われなければならない。", "notes": []}, {"major": "7", "major_title": "廃棄物処理", "minor": "7.3", "minor_title": "廃棄物管理及び撤去", "shall_no": 72, "text": "組織は破壊の記録を保持しなければならない。", "notes": []}, {"major": "7", "major_title": "廃棄物処理", "minor": "7.4", "minor_title": "排水管及び排水", "shall_no": 73, "text": "排水管は、材料、又は製品の汚染のリスクが避けられるように、設計され、造られ、配置されなければならない。", "notes": []}, {"major": "7", "major_title": "廃棄物処理", "minor": "7.4", "minor_title": "排水管及び排水", "shall_no": 74, "text": "排水管には、予測される流量を処理できる十分な能力がなければならない。", "notes": []}, {"major": "7", "major_title": "廃棄物処理", "minor": "7.4", "minor_title": "排水管及び排水", "shall_no": 75, "text": "排水管は、加工ラインの上を通過してはならない。", "notes": []}, {"major": "7", "major_title": "廃棄物処理", "minor": "7.4", "minor_title": "排水管及び排水", "shall_no": 76, "text": "排水方向は、汚染区域から清浄区域に流れでなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.1", "minor_title": "一般要求事項", "shall_no": 77, "text": "食品に接触する装置は、清掃・洗浄、消毒及び保守が容易にできるように設計され、造られなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.1", "minor_title": "一般要求事項", "shall_no": 78, "text": "接触面は、意図した製品、又は清掃・洗浄システムに、影響を及ぼさないか、又は影響を受けてはならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.1", "minor_title": "一般要求事項", "shall_no": 79, "text": "食品に接触する装置は、繰り返される清掃・洗浄に耐えることのできる耐久性のある材質の構造でなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.2", "minor_title": "衛生的な設計", "shall_no": 80, "text": "装置は、次を含む衛生的な設計の原則に適合しなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.2", "minor_title": "衛生的な設計", "shall_no": 82, "text": "装置の操作者の手と製品との接触を最小にするように設計されなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.3", "minor_title": "製品接触面", "shall_no": 83, "text": "製品接触表面は、食品に使用するために設計された材質で造られていなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.3", "minor_title": "製品接触面", "shall_no": 84, "text": "それらは、不浸透性で、無毒、又は腐食しないものでなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.4", "minor_title": "温度管理及びモニタリング装置", "shall_no": 85, "text": "加熱工程に使用する装置は、関連する製品の仕様で示される温度勾配及び保持条件に達していなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.4", "minor_title": "温度管理及びモニタリング装置", "shall_no": 86, "text": "装置は、モニタリング及び温度の管理を提供しなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.5", "minor_title": "清掃・洗浄プラント、器具及び装置", "shall_no": 87, "text": "ウェット及びドライの清掃・洗浄プログラムは、すべての機械装置、器具及び建屋が定められた頻度で清浄化を確実にするため文書化されなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.5", "minor_title": "清掃・洗浄プラント、器具及び装置", "shall_no": 88, "text": "プログラムには、何が清浄化されるのか（排水管を含む）、責任、その清掃・洗浄方法（例えば、CIP/COP）、許可された清掃・洗浄用の道具の使用、除去、又は分解条件及び清掃・洗浄を含め、決められた洗浄方法を規定しなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.6", "minor_title": "予防及び是正保守", "shall_no": 89, "text": "予防保守プログラムを実施しなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.6", "minor_title": "予防及び是正保守", "shall_no": 90, "text": "予防保守プログラムは、食品安全ハザードの監視及び／又は管理に用いるすべての機器を含まなければならない。", "notes": ["注記 そのような機器の中には、スクリーンメッシュ及びフィルター（空気用フィルターを含む）、マグネット、金属探知機及びX線検知部を含む。"]}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.6", "minor_title": "予防及び是正保守", "shall_no": 91, "text": "是正保守は、製造に隣接するライン、又は装置が汚染のリスクとならないよう行わなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.6", "minor_title": "予防及び是正保守", "shall_no": 92, "text": "製品の安全性にかかわる保守要求を優先させなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.6", "minor_title": "予防及び是正保守", "shall_no": 93, "text": "一時的に取り付けられたものは、製品の安全性にリスクを与えてはならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.6", "minor_title": "予防及び是正保守", "shall_no": 94, "text": "恒久的な修繕に置き換えの要求は、保守スケジュールに含めておかなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.6", "minor_title": "予防及び是正保守", "shall_no": 95, "text": "潤滑油及び熱媒体は、製品と直接、又は間接的に接触するリスクがある場合、食品用グレードでなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.6", "minor_title": "予防及び是正保守", "shall_no": 96, "text": "保守された装置を製造に戻す手順は、クリーンアップ、殺菌・消毒、特定された場合は殺菌手順、及び使用前点検を含まなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.6", "minor_title": "予防及び是正保守", "shall_no": 97, "text": "特定区域のPRP要求事項は、加工区域の保守区域及び保守活動を適用しなければならない。", "notes": []}, {"major": "8", "major_title": "装置の適切性、清掃・洗浄及び保守", "minor": "8.6", "minor_title": "予防及び是正保守", "shall_no": 98, "text": "保守要員は、彼らの活動に付随する製品のハザードについて訓練されていなければならない。", "notes": []}, {"major": "9", "major_title": "購入材料の管理（マネジメント）", "minor": "9.1", "minor_title": "一般要求事項", "shall_no": 99, "text": "食品の安全性に影響を与える材料の購入は、供給者が特定された要求を満たす能力をもち、確実にするように、管理されていなければならない。", "notes": []}, {"major": "9", "major_title": "購入材料の管理（マネジメント）", "minor": "9.1", "minor_title": "一般要求事項", "shall_no": 100, "text": "特定された購入要件の仕様に、入荷する材料が適合していることが検証されなければならない。", "notes": []}, {"major": "9", "major_title": "購入材料の管理（マネジメント）", "minor": "9.2", "minor_title": "供給者の選定及び管理", "shall_no": 101, "text": "供給者の選定、許可及びモニタリングのプロセスを決めなければならない。", "notes": []}, {"major": "9", "major_title": "購入材料の管理（マネジメント）", "minor": "9.2", "minor_title": "供給者の選定及び管理", "shall_no": 102, "text": "使用されたプロセスは、最終製品に対する潜在的なリスク、及び次の事項を含めて、ハザード評価により正当化されなければならない。", "notes": ["注記 供給者がどのように評価されるかという記述の例は以下を含む。", "注記 モニタリングには、材料、又は製品仕様への適合、COA要件への適合、十分な監査結果を含む。"]}, {"major": "9", "major_title": "購入材料の管理（マネジメント）", "minor": "9.3", "minor_title": "受入れ材料の要求事項（原料／材料包装材）", "shall_no": 103, "text": "配送車両は、荷降ろしに先立って、及び荷降ろしの間、材料の品質及び安全性が輸送の間に維持されていたことを検証するために、確認されなければならない（例えば、シールが無傷であること、虫が着いていないこと、温度記録があること）。", "notes": []}, {"major": "9", "major_title": "購入材料の管理（マネジメント）", "minor": "9.3", "minor_title": "受入れ材料の要求事項（原料／材料包装材）", "shall_no": 104, "text": "材料は、受領、又は使用の前に、特定された要求事項で適合性を検証するために、検査、試験されるか、又はCOAによって担保されなければならない。", "notes": []}, {"major": "9", "major_title": "購入材料の管理（マネジメント）", "minor": "9.3", "minor_title": "受入れ材料の要求事項（原料／材料包装材）", "shall_no": 105, "text": "検証の方法は文書化されなければならない。", "notes": ["注記 検査の頻度と範囲は、材料に存在するハザードと特定の供給者のリスク評価に基づくだろう。"]}, {"major": "9", "major_title": "購入材料の管理（マネジメント）", "minor": "9.3", "minor_title": "受入れ材料の要求事項（原料／材料包装材）", "shall_no": 106, "text": "関連する仕様書に適合しない材料は、それらが予想外に使用されることを防ぐことを確実にする、文書化された手順の下で取り扱われなければならない。", "notes": []}, {"major": "9", "major_title": "購入材料の管理（マネジメント）", "minor": "9.3", "minor_title": "受入れ材料の要求事項（原料／材料包装材）", "shall_no": 107, "text": "バルク材料の受入れラインへの搬入口は、識別され、蓋がされ、かつ施錠されなければならない。", "notes": []}, {"major": "9", "major_title": "購入材料の管理（マネジメント）", "minor": "9.3", "minor_title": "受入れ材料の要求事項（原料／材料包装材）", "shall_no": 108, "text": "そのようなシステムへの荷揚げは、受入れ材料の承認及び検証の後にのみ実施しなければならない。", "notes": []}, {"major": "10", "major_title": "交差汚染の予防手段", "minor": "10.1", "minor_title": "一般要求事項", "shall_no": 109, "text": "プログラムは、汚染を防止、管理、及び検知するために行わなければならない。", "notes": []}, {"major": "10", "major_title": "交差汚染の予防手段", "minor": "10.1", "minor_title": "一般要求事項", "shall_no": 110, "text": "物理的、アレルゲン及び微生物学的汚染を防止するための手段が含まれなければならない。", "notes": []}, {"major": "10", "major_title": "交差汚染の予防手段", "minor": "10.2", "minor_title": "微生物学的交差汚染", "shall_no": 111, "text": "潜在的に微生物学的な交差汚染が存在する区域（空気由来、又は動線から）は識別され、及び分離する（ゾーニング）計画が実施されなければならない。", "notes": []}, {"major": "10", "major_title": "交差汚染の予防手段", "minor": "10.2", "minor_title": "微生物学的交差汚染", "shall_no": 112, "text": "ハザード評価は、潜在的な汚染源、製品の感受性、及び以下の区域に適切な管理手段を決定するために、実施されなければならない。", "notes": []}, {"major": "10", "major_title": "交差汚染の予防手段", "minor": "10.3", "minor_title": "アレルゲンの管理", "shall_no": 113, "text": "製品に存在するアレルゲンは、設計による、又は製造等の交差接触による場合のどちらも、明示されなければならない。", "notes": []}, {"major": "10", "major_title": "交差汚染の予防手段", "minor": "10.3", "minor_title": "アレルゲンの管理", "shall_no": 114, "text": "開示は、消費者向け製品の表示、及びさらに加工される製品の表示、又は添付文書になければならない。", "notes": []}, {"major": "10", "major_title": "交差汚染の予防手段", "minor": "10.3", "minor_title": "アレルゲンの管理", "shall_no": 115, "text": "製品は、清掃・洗浄及びラインの交代手順、及び／又は製造順序による意図せぬ交差接触から保護されなければならない。", "notes": ["注記 製造による交差接触は、次のいずれでも生じる。", "注記 一般的な手直しのための要求事項は箇条14を参照のこと。"]}, {"major": "10", "major_title": "交差汚染の予防手段", "minor": "10.4", "minor_title": "物理的汚染", "shall_no": 116, "text": "壊れやすい材料が使われる場合は、定期点検に係る要求事項及び破損した場合の明確な手順を定めなければならない。", "notes": []}, {"major": "10", "major_title": "交差汚染の予防手段", "minor": "10.4", "minor_title": "物理的汚染", "shall_no": 117, "text": "ガラス破損の記録は維持されなければならない。", "notes": []}, {"major": "10", "major_title": "交差汚染の予防手段", "minor": "10.4", "minor_title": "物理的汚染", "shall_no": 118, "text": "ハザード評価に基づいて、手段は、潜在的汚染を防止するか、管理するか、又は検知するために実施されなければならない。", "notes": ["注記1 そのような手段の例には次を含む。", "注記2 潜在的汚染源には、木製のパレット及び道具、ゴム・シール、要員の防護服及び装置を含む。"]}, {"major": "11", "major_title": "清掃・洗浄及び殺菌・消毒", "minor": "11.1", "minor_title": "一般要求事項", "shall_no": 119, "text": "清掃・洗浄及び殺菌・消毒プログラムは、食品加工装置と環境が、衛生的状態に維持されることを確実にするために設計され、建設され、保守されなければならない。", "notes": []}, {"major": "11", "major_title": "清掃・洗浄及び殺菌・消毒", "minor": "11.1", "minor_title": "一般要求事項", "shall_no": 120, "text": "プログラムは、継続的に適合性及び有効性が監視されなければならない。", "notes": []}, {"major": "11", "major_title": "清掃・洗浄及び殺菌・消毒", "minor": "11.2", "minor_title": "清掃・洗浄及び殺菌・消毒用のための薬剤及び道具", "shall_no": 121, "text": "施設及び装置は、ウェット、又はドライの清掃・洗浄及び／又はサニテーションを容易にする条件で維持されなければならない。", "notes": []}, {"major": "11", "major_title": "清掃・洗浄及び殺菌・消毒", "minor": "11.2", "minor_title": "清掃・洗浄及び殺菌・消毒用のための薬剤及び道具", "shall_no": 122, "text": "清掃・洗浄及び殺菌・消毒用材及び化学薬剤は、明確に識別され、食品用グレードであり、隔離して保管され、メーカーの指示にのみ従った使い方で使用されなければならない。", "notes": []}, {"major": "11", "major_title": "清掃・洗浄及び殺菌・消毒", "minor": "11.2", "minor_title": "清掃・洗浄及び殺菌・消毒用のための薬剤及び道具", "shall_no": 123, "text": "道具及び装置は、衛生的な設計であり、外部からの物質の潜在的な源の存在しない状態に維持されなければならない。", "notes": []}, {"major": "11", "major_title": "清掃・洗浄及び殺菌・消毒", "minor": "11.3", "minor_title": "清掃・洗浄及び殺菌・消毒プログラム", "shall_no": 124, "text": "清掃・洗浄及び殺菌・消毒プログラムは、施設及び装置のすべての部分について、清掃・洗浄装置の清掃・洗浄を含め、決められたスケジュールで清掃・洗浄及び／又は殺菌・消毒されることを確実にするよう、組織により確立され、実施され、及び妥当性が確認されなければならない。", "notes": []}, {"major": "11", "major_title": "清掃・洗浄及び殺菌・消毒", "minor": "11.3", "minor_title": "清掃・洗浄及び殺菌・消毒プログラム", "shall_no": 125, "text": "清掃・洗浄及び／又は殺菌・消毒プログラムは、少なくとも次のことを規定しなければならない。", "notes": []}, {"major": "11", "major_title": "清掃・洗浄及び殺菌・消毒", "minor": "11.4", "minor_title": "CIPシステム", "shall_no": 126, "text": "CIPシステムは、稼動中の製造ラインから分離されなければならない。", "notes": []}, {"major": "11", "major_title": "清掃・洗浄及び殺菌・消毒", "minor": "11.4", "minor_title": "CIPシステム", "shall_no": 127, "text": "CIPシステムのためのパラメータは、特定され、監視されなければならない（使用するあらゆる化学物質の種類、濃度、接触時間及び温度）。", "notes": []}, {"major": "11", "major_title": "清掃・洗浄及び殺菌・消毒", "minor": "11.5", "minor_title": "サニテーションの有効性のモニタリング", "shall_no": 128, "text": "清掃・洗浄及びサニテーションプログラムは、それらの継続的な適合性及び有効性を確実にするために、組織によって特定された頻度でモニターされなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.1", "minor_title": "一般要求事項", "shall_no": 129, "text": "衛生、清掃・洗浄、受入れ材料の検査及びモニタリング手順は、環境が有害生物の活動を誘引しないことを確実にするため、実施されなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.2", "minor_title": "有害生物の防除プログラム", "shall_no": 130, "text": "施設には、有害生物の防除活動を管理、及び／又は専門家に対応する者を指名しなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.2", "minor_title": "有害生物の防除プログラム", "shall_no": 131, "text": "有害生物の防除管理プログラムは、標的となる有害生物の特定、実施計画、実施方法、スケジュール、管理手順、及び必要な場合の要求事項の訓練を文書化しなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.2", "minor_title": "有害生物の防除プログラム", "shall_no": 132, "text": "プログラムには、施設の指定された区域で使用するために、承認された化学薬剤のリストを含まなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.3", "minor_title": "アクセス（侵入）の予防", "shall_no": 133, "text": "建物は、手入れがよく行き届いていなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.3", "minor_title": "アクセス（侵入）の予防", "shall_no": 134, "text": "床、排水管及び他の潜在的な有害生物のアクセスポイントは、塞がなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.3", "minor_title": "アクセス（侵入）の予防", "shall_no": 135, "text": "外部の扉、窓、又は換気装置の開口部は、有害生物侵入の可能性を最低限にするよう設計されていなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.4", "minor_title": "棲みか及び出産", "shall_no": 136, "text": "保管の規範は、有害生物に食物と水を与える可能性を最小にするよう設計されなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.4", "minor_title": "棲みか及び出産", "shall_no": 137, "text": "被害を受けたことが分かった材料は、他の材料、製品、又は施設の汚染を防止するやり方で、扱われなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.4", "minor_title": "棲みか及び出産", "shall_no": 138, "text": "潜在的な有害生物の棲みか（例えば、穴、植栽、保管品）を取り除かなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.4", "minor_title": "棲みか及び出産", "shall_no": 139, "text": "外部環境が移動性の住居になる場合は、保管する換気扇、又は有害生物による損害（例えば、鳥の糞）から保護されなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.5", "minor_title": "モニタリング及び検知", "shall_no": 140, "text": "有害生物の防除のモニタリングプログラムは、有害生物の活動を特定するためにキーとなる場所に、検知器及び捕獲器を置くことを含まなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.5", "minor_title": "モニタリング及び検知", "shall_no": 141, "text": "検知器と捕獲器の配置図は、維持されなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.5", "minor_title": "モニタリング及び検知", "shall_no": 142, "text": "検知器と捕獲器は、材料、製品、又は施設の潜在的汚染を防止するために設計され、配置されなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.5", "minor_title": "モニタリング及び検知", "shall_no": 143, "text": "検知器及び捕獲器は、丈夫で、いたずらに耐える構造でなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.5", "minor_title": "モニタリング及び検知", "shall_no": 144, "text": "それらは、標的有害生物に適切なものでなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.5", "minor_title": "モニタリング及び検知", "shall_no": 145, "text": "検知器及び捕獲器は、新たな有害生物の活動を確認することを目的とする頻度で点検されなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.5", "minor_title": "モニタリング及び検知", "shall_no": 146, "text": "点検の結果は、傾向を確認するために分析されなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.6", "minor_title": "駆除", "shall_no": 147, "text": "駆除手段は、出現の証拠の報告があった場合、直ちに実施しなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.6", "minor_title": "駆除", "shall_no": 148, "text": "殺そ・殺虫剤の使用及び適用は、訓練された熟練者に制限され、及び製品安全ハザードを避けるように管理されなければならない。", "notes": []}, {"major": "12", "major_title": "有害生物（そ（鼠）族、昆虫等）の防除", "minor": "12.6", "minor_title": "駆除", "shall_no": 149, "text": "殺そ・殺虫剤使用の記録は、使用した種類、量及び使用温度を示すために、維持されなければならない（どこで、いつ、どのように適用されたか、及び対象有害生物）。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.1", "minor_title": "一般要求事項", "shall_no": 150, "text": "加工区域、又は製品にもたらされるハザードに関連する、人の衛生及び行動に対する要求事項は、確立され、文書化されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.1", "minor_title": "一般要求事項", "shall_no": 151, "text": "すべての要員、訪問客及び契約者は、衛生化された要求事項に従うことを求められなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.2", "minor_title": "要員の衛生的設備及び便所", "shall_no": 152, "text": "要員のための衛生施設は、組織にとって必要とされる個人衛生の程度が維持されることができることを確実とするために、利用できなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.2", "minor_title": "要員の衛生的設備及び便所", "shall_no": 153, "text": "施設は、衛生要求事項が適用する箇所に配置され、かつ、明示されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.2", "minor_title": "要員の衛生的設備及び便所", "shall_no": 154, "text": "施設は、以下でなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.3", "minor_title": "社員食堂及び飲食場所の指定", "shall_no": 155, "text": "社員食堂及び食品を保管したり、食べたりする指定された区域は、製造区域との潜在的な交差汚染を最小となるよう配置されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.3", "minor_title": "社員食堂及び飲食場所の指定", "shall_no": 156, "text": "社員食堂は、材料及び調整されたものの衛生的な保管、調理済みの食品の保管を確実にするために管理されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.3", "minor_title": "社員食堂及び飲食場所の指定", "shall_no": 157, "text": "保管条件並びに、保管、調理及び保持の温度、及び時間制限は、特定されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.3", "minor_title": "社員食堂及び飲食場所の指定", "shall_no": 158, "text": "従業員自身の飲食物は、指定された区域だけでのみ保管され、消費されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.4", "minor_title": "作業着及び保護着", "shall_no": 159, "text": "工場内で働く、又は場内に入る要員は、むき出しの製品及び／又は材料が取り扱われる区域の場合には、目的に適った、清潔でよい状態（例えば、ほころび、裂け目、又はすり減った材料でないこと）の作業着を着用しなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.4", "minor_title": "作業着及び保護着", "shall_no": 160, "text": "食品保護、又は衛生目的用に指定されている作業着は、他のどの目的のためにも使われてはならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.4", "minor_title": "作業着及び保護着", "shall_no": 161, "text": "作業着はボタンが付いていてはならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.4", "minor_title": "作業着及び保護着", "shall_no": 162, "text": "作業着はウエスト・レベルより上に外付けのポケットが付いていてはならない。ファスナー、又はホック留め具は容認できる。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.4", "minor_title": "作業着及び保護着", "shall_no": 163, "text": "作業着は、基準に達するように、及び衣服の意図した使用に覆うように定期的に、洗濯されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.4", "minor_title": "作業着及び保護着", "shall_no": 164, "text": "作業着は、毛髪、汗などで、製品を汚染しないことを確実にするため、適切に装着できなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.4", "minor_title": "作業着及び保護着", "shall_no": 165, "text": "毛、あごひげ及び口ひげは、ハザード分析が別途禁止を指示しない限り、保護されなければならない（すなわち、完全に覆う）。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.4", "minor_title": "作業着及び保護着", "shall_no": 166, "text": "手袋が製品接触のために使われる場合は、手袋は清潔で、よい状態でなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.4", "minor_title": "作業着及び保護着", "shall_no": 167, "text": "加工区域で用いる靴は、完全に覆われ、非浸透性の材料から作られていなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.4", "minor_title": "作業着及び保護着", "shall_no": 168, "text": "個人用の保護装置は、必要とされる場合、製品の汚染を防止するように設計され、衛生的な状態を保守されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.5", "minor_title": "健康状態", "shall_no": 169, "text": "文書化されたハザード、又は医学的評価が別途示されない限り、作業に対する国の法的制限のある従業員は、食品に触れる作業（ケータリング現場を含む）における雇用に先だって健康診断を受けなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.5", "minor_title": "健康状態", "shall_no": 170, "text": "更なる健康診断が許される場合は、組織によって決められた間隔で実施されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.6", "minor_title": "疾病及び傷害", "shall_no": 171, "text": "法律によって許容される場合、従業員は、食品を取り扱う区域から可能な限り排除することを管理するために以下の状況を報告しなければならない：黄疸、下痢、嘔吐、発熱、発熱のある喉頭痛、目に視える感染性皮膚病（吹き出物、傷、又はただれ）及び耳、目、又は鼻からの分泌物。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.6", "minor_title": "疾病及び傷害", "shall_no": 172, "text": "食品を通じて感染、又はその保菌者で、病気から病気をつづすことが分かっている、又は予想される人々は、食品、又は食品に接触する食品材料の取り扱いから、避けられなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.6", "minor_title": "疾病及び傷害", "shall_no": 173, "text": "食品取り扱い区域では、傷、又は火傷のある要員は、それを定められた絆創膏で覆うことが要求されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.6", "minor_title": "疾病及び傷害", "shall_no": 174, "text": "対象のあらゆる紛失は、直ちに監督者に報告されなければならない。", "notes": ["注記 絆創膏は鮮明に色分けし、必要に応じて金属検知できることが望ましい。"]}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.7", "minor_title": "人の清潔度", "shall_no": 175, "text": "食品製造区域の要員は、手を洗い、及び要求される場合は、手を殺菌・消毒することが要求されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.7", "minor_title": "人の清潔度", "shall_no": 176, "text": "要員は、材料、又は製品上で、くしゃみ、又は咳を控えることが要求されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.7", "minor_title": "人の清潔度", "shall_no": 177, "text": "つばを吐くことは禁止されなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.7", "minor_title": "人の清潔度", "shall_no": 178, "text": "指の爪は清潔で、整っていることが守られなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.8", "minor_title": "人の行動", "shall_no": 179, "text": "文書化された方針は、加工、包装及び保管区域で要員に求められる行動を記述しなければならない。", "notes": []}, {"major": "13", "major_title": "要員の衛生及び従業員のための施設", "minor": "13.8", "minor_title": "人の行動", "shall_no": 180, "text": "方針は少なくとも以下を網羅しなければならない。", "notes": []}, {"major": "14", "major_title": "手直し", "minor": "14.1", "minor_title": "一般要求事項", "shall_no": 181, "text": "手直し品は、製品の安全性、品質、トレーサビリティ及び法令順守が維持される方法で保管され、取り扱われ及び使用されなければならない。", "notes": []}, {"major": "14", "major_title": "手直し", "minor": "14.2", "minor_title": "保管、識別及びトレーサビリティ", "shall_no": 182, "text": "保管された手直し品は、微生物的、化学的、又は異物汚染に曝されないように保護されなければならない。", "notes": []}, {"major": "14", "major_title": "手直し", "minor": "14.2", "minor_title": "保管、識別及びトレーサビリティ", "shall_no": 183, "text": "手直し品（例えば、アレルゲン）のための隔離要件は文書化され、かつ満たされなければならない。", "notes": []}, {"major": "14", "major_title": "手直し", "minor": "14.2", "minor_title": "保管、識別及びトレーサビリティ", "shall_no": 184, "text": "手直し品は、明確に識別され、及び／又はトレーサビリティができるように表示されなければならない。", "notes": []}, {"major": "14", "major_title": "手直し", "minor": "14.2", "minor_title": "保管、識別及びトレーサビリティ", "shall_no": 185, "text": "手直し品のためのトレーサビリティの記録は維持されなければならない。", "notes": []}, {"major": "14", "major_title": "手直し", "minor": "14.2", "minor_title": "保管、識別及びトレーサビリティ", "shall_no": 186, "text": "手直し品の分類、又は手直しを指示した理由は記録されなければならない（例えば、製品の名前、製造日、シフト、原因となったライン、シェルフライフ）。", "notes": []}, {"major": "14", "major_title": "手直し", "minor": "14.3", "minor_title": "手直し（品）の使用", "shall_no": 187, "text": "手直し品が“加工過程の”ステップとして製品に取り込まれる場合、許容できる量、タイプ及び手直し品使用の条件は特定されなければならない。", "notes": []}, {"major": "14", "major_title": "手直し", "minor": "14.3", "minor_title": "手直し（品）の使用", "shall_no": 188, "text": "工程のステップ及び追加方法は、あらゆる必要な前処理加工段階を含めて、明確にしなければならない。", "notes": []}, {"major": "14", "major_title": "手直し", "minor": "14.3", "minor_title": "手直し（品）の使用", "shall_no": 189, "text": "手直し活動が、汚染された、又はラップされた包装から製品を取り出すことを含む場合は、包装資材の除去及び隔離を確実にし、及び異物による製品の汚染を防止するように管理しなければならない。", "notes": []}, {"major": "15", "major_title": "製品のリコール手順", "minor": "15.1", "minor_title": "一般要求事項", "shall_no": 190, "text": "システムは、サプライチェーンのすべての必要なポイントから、食品安全基準の要求を満たすことに失敗した製品を識別し、場所を突き止め、及び取り除くことを確実に行えるようにしなければならない。", "notes": []}, {"major": "15", "major_title": "製品のリコール手順", "minor": "15.2", "minor_title": "製品のリコール要求事項", "shall_no": 191, "text": "リコール発生の際、鍵となる接触先のリストは維持されなければならない。", "notes": []}, {"major": "15", "major_title": "製品のリコール手順", "minor": "15.2", "minor_title": "製品のリコール要求事項", "shall_no": 192, "text": "製品が直接的な健康ハザードのために回収される場合、同じ案件の下で生産される他の製品の安全性が評価されなければならない。", "notes": []}, {"major": "15", "major_title": "製品のリコール手順", "minor": "15.2", "minor_title": "製品のリコール要求事項", "shall_no": 193, "text": "警告を公表する必要性は、考慮されなければならない。", "notes": []}, {"major": "16", "major_title": "倉庫保管", "minor": "16.1", "minor_title": "一般要求事項", "shall_no": 194, "text": "材料及び製品は、埃、結露、他、におい、又は他の汚染源から保護されている、清潔で乾燥した換気が良い場所に置かれなければならない。", "notes": []}, {"major": "16", "major_title": "倉庫保管", "minor": "16.2", "minor_title": "倉庫保管の要求事項", "shall_no": 195, "text": "製品、又は倉庫保管の仕様によって要求される場合は、保管の温度、湿度及び他の環境条件の効果的な管理が行われなければならない。", "notes": []}, {"major": "16", "major_title": "倉庫保管", "minor": "16.2", "minor_title": "倉庫保管の要求事項", "shall_no": 196, "text": "廃棄物及び化学薬剤（清掃・洗浄用品、潤滑油及び殺そ・殺虫剤）は別々に保管されなくてはならない。", "notes": []}, {"major": "16", "major_title": "倉庫保管", "minor": "16.2", "minor_title": "倉庫保管の要求事項", "shall_no": 197, "text": "分割区域、又は不適合として識別された材料を隔離する他の方法が提供されなければならない。", "notes": []}, {"major": "16", "major_title": "倉庫保管", "minor": "16.2", "minor_title": "倉庫保管の要求事項", "shall_no": 198, "text": "特定の在庫管理システム（FIFO/FEFO）は観察されなければならない。", "notes": []}, {"major": "16", "major_title": "倉庫保管", "minor": "16.2", "minor_title": "倉庫保管の要求事項", "shall_no": 199, "text": "ガソリン、又はディーゼルで動くフォークリフトトラックは、食品材料、又は製品保管区域で使用してはならない。", "notes": []}, {"major": "16", "major_title": "倉庫保管", "minor": "16.3", "minor_title": "車両、輸送車及びコンテナ", "shall_no": 200, "text": "車両、輸送車及びコンテナは、修理され、清掃され、関連する仕様書の要求に一致している状態に維持されなければならない。", "notes": []}, {"major": "16", "major_title": "倉庫保管", "minor": "16.3", "minor_title": "車両、輸送車及びコンテナ", "shall_no": 201, "text": "車両、輸送車及びコンテナは、製品の損傷、又は汚染防止ができなければならない。", "notes": []}, {"major": "16", "major_title": "倉庫保管", "minor": "16.3", "minor_title": "車両、輸送車及びコンテナ", "shall_no": 202, "text": "温度及び湿度の管理が組織によって要求される場合は、適用され、監視されなければならない。", "notes": []}, {"major": "16", "major_title": "倉庫保管", "minor": "16.3", "minor_title": "車両、輸送車及びコンテナ", "shall_no": 203, "text": "同じ車両、輸送車及びコンテナが食品及び非食品製品に使われる場合は、清掃・洗浄は荷物の積載の間に実施しなければならない。", "notes": []}, {"major": "16", "major_title": "倉庫保管", "minor": "16.3", "minor_title": "車両、輸送車及びコンテナ", "shall_no": 204, "text": "バルク用コンテナは、食品専用にしなければならない。", "notes": []}, {"major": "16", "major_title": "倉庫保管", "minor": "16.3", "minor_title": "車両、輸送車及びコンテナ", "shall_no": 205, "text": "組織が要求する場合、バルク用コンテナは特定の材料でなければならない。", "notes": []}, {"major": "17", "major_title": "製品情報及び消費者の認識", "minor": "17.1", "minor_title": "一般要求事項", "shall_no": 206, "text": "情報は、消費者に対し、彼らがその重要性を理解し、及び選択に資することができるような仕方で提供されなければならない。", "notes": []}, {"major": "18", "major_title": "食品防御、バイオビジランス及びバイオテロリズム", "minor": "18.1", "minor_title": "一般要求事項", "shall_no": 207, "text": "各施設は、製品に対するサボタージュ、破壊行為、又はテロリズムの潜在的な行為によるハザードを評価し、及び適切な予防手段を講じなければならない。", "notes": []}, {"major": "18", "major_title": "食品防御、バイオビジランス及びバイオテロリズム", "minor": "18.2", "minor_title": "アクセス管理", "shall_no": 208, "text": "施設の中の潜在的に注意を要する区域は、識別され、地図にし、及びアクセス管理しなければならない。", "notes": []}];
+
+const SK='ts22002_v1';
+let state=JSON.parse(localStorage.getItem(SK)||'{}');
+
+function save(){localStorage.setItem(SK,JSON.stringify(state));updateProg();}
+
+function updateProg(){
+  const ans=Object.keys(state).filter(k=>!k.endsWith('_c')&&state[k]).length;
+  const pct=(ans/207*100).toFixed(0);
+  document.getElementById('pb').style.width=pct+'%';
+  document.getElementById('pt').textContent=ans+' / 207 回答済み';
+}
+
+function esc(s){if(!s)return '';return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// Group data
+const majors=[];const mm={};
+DATA.forEach(item=>{
+  if(!mm[item.major]){mm[item.major]={no:item.major,title:item.major_title,minors:{}};majors.push(mm[item.major]);}
+  if(!mm[item.major].minors[item.minor]){mm[item.major].minors[item.minor]={no:item.minor,title:item.minor_title,items:[]};}
+  mm[item.major].minors[item.minor].items.push(item);
+});
+majors.unshift({no:'s',title:'概要',minors:{}});
+
+const tabsEl=document.getElementById('tabs');
+const mainEl=document.getElementById('main');
+const panels=[];
+
+function updateBadges(){
+  majors.forEach(maj=>{
+    if(maj.no==='s')return;
+    const items=Object.values(maj.minors).flatMap(m=>m.items);
+    const done=items.filter(i=>state[i.shall_no]).length;
+    const el=document.getElementById('b-'+maj.no);
+    if(el)el.textContent=done+'/'+items.length;
+  });
+}
+
+majors.forEach((maj,idx)=>{
+  const btn=document.createElement('button');
+  btn.className='tab'+(idx===0?' active':'');
+  btn.dataset.idx=idx;
+  if(maj.no==='s'){
+    btn.textContent='概要';
+  } else {
+    const short=maj.no+' '+maj.title.slice(0,8);
+    btn.innerHTML=short+'<span class="badge" id="b-'+maj.no+'">-</span>';
+  }
+  btn.onclick=()=>switchTab(idx);
+  tabsEl.appendChild(btn);
+
+  const panel=document.createElement('div');
+  panel.className='panel'+(idx===0?' active':'');
+  panel.dataset.idx=idx;
+  if(maj.no==='s'){
+    panel.innerHTML='<div id="sum"></div>';
+  } else {
+    Object.values(maj.minors).forEach(min=>{
+      const grp=document.createElement('div');
+      grp.className='mg';
+      grp.innerHTML='<div class="mh">'+esc(min.no)+' '+esc(min.title)+'</div>';
+      min.items.forEach(item=>grp.appendChild(buildCard(item)));
+      panel.appendChild(grp);
+    });
+  }
+  mainEl.appendChild(panel);
+  panels.push(panel);
+});
+
+function buildCard(item){
+  const div=document.createElement('div');
+  const v=state[item.shall_no]||'';
+  div.className='card'+(v?' '+v:'');
+  div.id='card-'+item.shall_no;
+
+  const notesHtml=item.notes.length
+    ?item.notes.map(n=>'<div class="note">'+esc(n)+'</div>').join(''):'';
+
+  const itop=document.createElement('div');itop.className='itop';
+  itop.innerHTML='<span class="sno">No.'+item.shall_no+'</span><div class="itext">'+esc(item.text)+notesHtml+'</div>';
+  div.appendChild(itop);
+
+  const rg=document.createElement('div');rg.className='rg';
+  [['ok','✓ 適切'],['ng','✗ 不適切'],['ex','— 除外']].forEach(([val,label])=>{
+    const btn=document.createElement('div');
+    btn.className='rb'+(v===val?' '+val:'');
+    btn.textContent=label;
+    btn.id='rb-'+val+'-'+item.shall_no;
+    btn.addEventListener('click',()=>{
+      state[item.shall_no]=val;
+      save();
+      updateCard(item.shall_no,val);
+      updateBadges();
+      const se=document.getElementById('sum');if(se)refreshSum();
+    });
+    rg.appendChild(btn);
+  });
+  div.appendChild(rg);
+
+  const cmt=document.createElement('textarea');
+  cmt.className='cmt';
+  cmt.placeholder='コメント・代替方法（任意）';
+  cmt.value=state[item.shall_no+'_c']||'';
+  cmt.addEventListener('input',e=>{state[item.shall_no+'_c']=e.target.value;save();});
+  div.appendChild(cmt);
+  return div;
+}
+
+function updateCard(no,val){
+  const card=document.getElementById('card-'+no);
+  if(!card)return;
+  card.className='card '+(val||'');
+  ['ok','ng','ex'].forEach(v=>{
+    const b=document.getElementById('rb-'+v+'-'+no);
+    if(b)b.className='rb'+(v===val?' '+val:'');
+  });
+}
+
+function refreshSum(){
+  const el=document.getElementById('sum');
+  if(!el)return;
+  const ok=DATA.filter(i=>state[i.shall_no]==='ok').length;
+  const ng=DATA.filter(i=>state[i.shall_no]==='ng').length;
+  const ex=DATA.filter(i=>state[i.shall_no]==='ex').length;
+  const un=DATA.filter(i=>!state[i.shall_no]).length;
+  const ngItems=DATA.filter(i=>state[i.shall_no]==='ng');
+
+  let html='<div class="sg">'
+    +'<div class="sc ok"><div class="n">'+ok+'</div><div class="l">適切</div></div>'
+    +'<div class="sc ng"><div class="n">'+ng+'</div><div class="l">不適切</div></div>'
+    +'<div class="sc ex"><div class="n">'+ex+'</div><div class="l">除外</div></div>'
+    +'</div>'
+    +'<div style="text-align:center;color:var(--gray);font-size:13px;margin-bottom:16px">未回答: '+un+'件 / 全207項目</div>';
+
+  if(ngItems.length){
+    html+='<div style="font-weight:700;margin-bottom:8px;font-size:13px;color:var(--red)">不適切項目 ('+ngItems.length+'件)</div>';
+    ngItems.forEach(i=>{
+      const c=state[i.shall_no+'_c']||'';
+      html+='<div class="issue"><div class="ino">No.'+i.shall_no+' — '+esc(i.major_title)+' &gt; '+esc(i.minor_title)+'</div>'
+        +'<div class="itxt">'+esc(i.text)+'</div>'
+        +(c?'<div class="icmt">'+esc(c)+'</div>':'')+'</div>';
+    });
+  } else if(un===0){
+    html+='<div class="empty">全207項目の評価が完了しています</div>';
+  }
+
+  html+='<button class="ebtn" onclick="exportCSV()">結果をCSVでエクスポート</button>'
+    +'<button class="rbtn" onclick="resetAll()">全回答をリセット</button>';
+  el.innerHTML=html;
+}
+
+function exportCSV(){
+  const rows=[['SHALL番号','大項目','中項目','要求事項','評価','コメント']];
+  DATA.forEach(item=>{
+    const v=state[item.shall_no]||'';
+    const lbl=v==='ok'?'適切':v==='ng'?'不適切':v==='ex'?'除外':'未回答';
+    rows.push([item.shall_no,item.major_title,item.minor_title,item.text,lbl,state[item.shall_no+'_c']||'']);
+  });
+  const csv=rows.map(r=>r.map(c=>'"'+String(c).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob(['﻿'+csv],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='TS22002-1_評価結果.csv';a.click();
+  URL.revokeObjectURL(url);
+}
+
+function resetAll(){
+  if(!confirm('全ての回答をリセットしますか？この操作は元に戻せません。'))return;
+  state={};save();location.reload();
+}
+
+function switchTab(idx){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  panels.forEach((p,i)=>p.classList.toggle('active',i===idx));
+  if(idx===0)refreshSum();
+  window.scrollTo(0,0);
+}
+
+updateProg();updateBadges();refreshSum();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
